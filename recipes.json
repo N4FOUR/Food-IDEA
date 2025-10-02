@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Pad Thai",
+    "style": "Thai",
+    "ingredients": ["noodle", "shrimp", "egg", "bean sprout"]
+  },
+  {
+    "name": "Sushi",
+    "style": "Japan",
+    "ingredients": ["rice", "fish", "seaweed"]
+  },
+  {
+    "name": "Tom Yum Soup",
+    "style": "Thai",
+    "ingredients": ["shrimp", "lemongrass", "chili", "mushroom"]
+  },
+  {
+    "name": "Hamburger",
+    "style": "USA",
+    "ingredients": ["bread", "beef", "lettuce", "cheese"]
+  }
+]
