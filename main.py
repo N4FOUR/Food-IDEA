@@ -24,15 +24,13 @@ all_styles = sorted(list({r["style"] for r in recipes if r.get("style")}))
 selected_styles = st.multiselect("Choose style(s) (leave empty for all)", all_styles, default=all_styles)
 
 ing_input = st.text_input("Enter your ingredients (comma separated). Example: pork, carrot, egg")
-max_ing = len(ingredients) if ingredients else 5
 min_match = st.slider(
     "Minimum matched ingredients",
     min_value=1,
-    max_value=max_ing,
-    value=1,
+    max_value=5,   # กำหนดช่วงที่เลือกได้
+    value=1,       # ค่าเริ่มต้น
     help="Only show recipes with at least this many matching ingredients"
 )
-
 show_missing = st.checkbox("Show missing ingredients", value=True)
 max_results = st.number_input("Max results to show", min_value=1, max_value=50, value=10)
 
@@ -120,4 +118,5 @@ if q:
             st.write(f"- **{rec['name']}** ({rec['style']}) — ingredients: {', '.join(rec['ingredients'])}")
     else:
         st.write("No recipe name match.")
+
 
