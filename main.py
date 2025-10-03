@@ -8,7 +8,7 @@ st.title('Food IDEA')
 AllStyle=sorted(list({item['style'] for item in recipes if item.get('style')}))
     
 styles_input = st.multiselect('Food Style', AllStyle)
-ingrediants_input = st.text_input('ingrediants ex. (rice, tuna, salmon, seaweed, wasabi, soy sauce)')
+ingrediants_input = st.text_input('ingrediants')
 # styles_input = input("Style: ")
 # ingrediants_input = input("Ingrediants: ")
 
@@ -43,14 +43,16 @@ if st.button('Get Menu'):
         # print(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
         menu_list.append(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
 
-    reccommend_list = sorted(menu_list, key=lambda x: x[-1] if x else 0, reverse=True)
-    for item in reccommend_list:
-        if item:
-            dish=item[0]
-            missing_ing=', '.join(item[1]) if item[1] else ''
-            with st.container(border=True):
-                st.write(f"{dish['style']} : {dish['name']}")
-                st.caption(f'Match Score : {item[2]}')
-                st.caption(f'Ingrediants : {", ".join(dish["ingredients"])}')
-                st.caption(f'Missing Ingrediants : {missing_ing}')
-
+    if menu_list:
+        reccommend_list = sorted(menu_list, key=lambda x: x[-1] if x else 0, reverse=True)
+        for item in reccommend_list:
+            if item:
+                dish=item[0]
+                missing_ing=', '.join(item[1]) if item[1] else ''
+                with st.container(border=True):
+                    st.write(f"{dish['style']} : {dish['name']}")
+                    st.caption(f'Match Score : {item[2]}')
+                    st.caption(f'Ingrediants : {", ".join(dish["ingredients"])}')
+                    st.caption(f'Missing Ingrediants : {missing_ing}')
+    else:
+        st.write(f'Sorry, We dont have {load_ingrediant_f_filter(ingrediants_input)} in data')
