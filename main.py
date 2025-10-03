@@ -34,7 +34,7 @@ def menu_filter_for_rdm(menu, userinput):
             match_ing.append(ing)
         else:
             missing_ing.append(ing)
-    if match_ing:return [menu, missing_ing, len(match_ing)]
+    if match_ing:return [menu, missing_ing]
 
     
 if st.button('Get Menu'):
@@ -48,16 +48,15 @@ if st.button('Get Menu'):
             menu_list.append(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
 
     if menu_list:
-        reccommend_list = sorted(menu_list, key=lambda x: x[-1] if x else 0, reverse=True)
-        for item in reccommend_list:
+        for item in menu_list:
             if item:
                 dish=item[0]
                 missing_ing=', '.join(item[1]) if item[1] else ''
                 with st.container(border=True):
                     st.write(f"{dish['style']} : {dish['name']}")
-                    st.caption(f'Match Score : {item[2]}')
                     st.caption(f'Ingrediants : {", ".join(dish["ingredients"])}')
                     st.caption(f'Missing Ingrediants : {missing_ing}')
     else:
         st.write(f'Sorry, We dont have this ingredients in data')
+
 
