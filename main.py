@@ -3,14 +3,14 @@ import streamlit as st
 
 with open('recipes.json', 'r') as file: recipes = json.load(file)
 
-# st.title('Food IDEA')
+st.title('Food IDEA')
 
 AllStyle=sorted(list({item['style'] for item in recipes if item.get('style')}))
     
-# styles_input = st.multiselect('Food Style', AllStyle)
-# ingrediants_input = st.text_input('ingrediants')
-styles_input = input("Style: ")
-ingrediants_input = input("Ingrediants: ")
+styles_input = st.multiselect('Food Style', AllStyle)
+ingrediants_input = st.text_input('ingrediants')
+# styles_input = input("Style: ")
+# ingrediants_input = input("Ingrediants: ")
 
 def load_menu_f_style(styles_input):
     return [style for style in recipes if style['style'] in styles_input]
@@ -53,3 +53,4 @@ if st.button('Get Menu'):
                 st.write(dish['name'])
                 st.caption(f'Match Score : {item[2]}')
                 st.caption(f'Missing Ingrediants : {missing_ing}')
+
