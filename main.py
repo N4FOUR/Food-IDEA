@@ -8,7 +8,7 @@ st.title('Food IDEA')
 AllStyle=sorted(list({item['style'] for item in recipes if item.get('style')}))
     
 styles_input = st.multiselect('Food Style', AllStyle)
-ingrediants_input = st.text_input('ingrediants')
+ingrediants_input = st.text_input('ingrediants ex. (rice, tuna, salmon, seaweed, wasabi, soy sauce)')
 # styles_input = input("Style: ")
 # ingrediants_input = input("Ingrediants: ")
 
@@ -53,3 +53,4 @@ if st.button('Get Menu'):
                 st.caption(f'Match Score : {item[2]}')
                 st.caption(f'Ingrediants : {", ".join(dish["ingredients"])}')
                 st.caption(f'Missing Ingrediants : {missing_ing}')
+
