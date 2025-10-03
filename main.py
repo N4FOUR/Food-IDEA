@@ -11,7 +11,8 @@ styles_input = st.multiselect('Food Style', AllStyle)
 ingrediants_input = st.text_input('ingrediants')
 
 def _filter_menu_style(styles_input):
-    return [style for style in recipes if style['style'] in styles_input]
+    if styles_input:return [style for style in recipes if style['style'] in styles_input]
+    else:return recipes
 
 def _filter_user_ingrediants(ingrediants_input):
     if ingrediants_input:
@@ -37,3 +38,4 @@ if st.button('Enter'):
                 st.caption(f'Missing Ingrediants : {", ".join(missing_ing)}' if missing_ing else 'Missing Ingrediants : None')
         else:
             st.write(f'Sorry, We dont have this ingredients in data')
+
