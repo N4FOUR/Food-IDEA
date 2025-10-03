@@ -9,54 +9,31 @@ AllStyle=sorted(list({item['style'] for item in recipes if item.get('style')}))
     
 styles_input = st.multiselect('Food Style', AllStyle)
 ingrediants_input = st.text_input('ingrediants')
-# styles_input = input("Style: ")
-# ingrediants_input = input("Ingrediants: ")
 
-def load_menu_f_style(styles_input):
+def _filter_menu_style(styles_input):
     return [style for style in recipes if style['style'] in styles_input]
 
-def load_ingrediant_f_filter(ingrediants_input):
+def _filter_user_ingrediants(ingrediants_input):
     if ingrediants_input:
         return [str(ing).lower() for ing in ingrediants_input.split(',')]
     else:
         return []
 
-def menu_filter_for_rdm(menu, userinput):
-    # print(menu)
-    local_ingrediants = menu['ingredients']
-    input_ing = userinput
+def _menu_filter_for_rdm(menu, userinput):
+    match_ing_list = [ing for ing in menu['ingredients'] if ing in userinput]
+    if match_ing_list:return menu
+    else: return None
 
-    missing_ing = []
-    match_ing = []
-
-    for ing in local_ingrediants:
-        if ing in input_ing:
-            match_ing.append(ing)
+if st.button('Enter'):
+    for menu in _filter_menu_style(styles_input):
+        recdm_food = _menu_filter_for_rdm(menu, _filter_user_ingrediants(ingrediants_input))
+        if recdm_food:
+            missing_ing = [ing for ing in recdm_food["ingredients"] if ing not in _filter_user_ingrediants(ingrediants_input)]
+            with st.container(border=True):
+                st.write(f'{recdm_food["style"]} : {recdm_food["name"]}')
+                st.text(f'Category : {recdm_food['category']}')
+                st.text(f'Vegetarian : {recdm_food["vegetarian"]}')
+                st.caption(f'Ingrediants : {", ".join(recdm_food["ingredients"])}')
+                st.caption(f'Missing Ingrediants : {", ".join(missing_ing)}' if missing_ing else 'Missing Ingrediants : None')
         else:
-            missing_ing.append(ing)
-    if match_ing:return [menu, missing_ing]
-
-    
-if st.button('Get Menu'):
-    menu_list = list()
-    if styles_input:
-        for menu in load_menu_f_style(styles_input):
-            # print(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
-            menu_list.append(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
-    else:
-        for menu in recipes:
-            menu_list.append(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
-
-    if menu_list:
-        for item in menu_list:
-            if item:
-                dish=item[0]
-                missing_ing=', '.join(item[1]) if item[1] else ''
-                with st.container(border=True):
-                    st.write(f"{dish['style']} : {dish['name']}")
-                    st.caption(f'Ingrediants : {", ".join(dish["ingredients"])}')
-                    st.caption(f'Missing Ingrediants : {missing_ing}')
-    else:
-        st.write(f'Sorry, We dont have this ingredients in data')
-
-
+            st.write(f'Sorry, We dont have this ingredients in data')
