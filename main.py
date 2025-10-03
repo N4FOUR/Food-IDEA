@@ -49,6 +49,7 @@ if st.button('Get Menu'):
             dish=item[0]
             missing_ing=', '.join(item[1]) if item[1] else ''
             with st.container(border=True):
-                st.write(f"{dish['style']}:{dish['name']}")
+                st.write(f"{dish['style']} : {dish['name']}")
                 st.caption(f'Match Score : {item[2]}')
+                st.caption(f'Ingrediants : {", ".join(dish["ingredients"])}')
                 st.caption(f'Missing Ingrediants : {missing_ing}')
