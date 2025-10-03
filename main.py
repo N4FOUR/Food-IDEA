@@ -43,7 +43,7 @@ if st.button('Get Menu'):
         # print(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
         menu_list.append(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
 
-    reccommend_list = sorted(menu_list, key=lambda x: x[2], reverse=True)
+    reccommend_list = sorted(menu_list, key=lambda x: x[-1] for x in menu_list, reverse=True)
     for item in reccommend_list:
         dish=item[0]
         missing_ing=item[1]
@@ -52,4 +52,5 @@ if st.button('Get Menu'):
             st.write(dish['name'])
             st.caption(f'Match Score : {item[2]}')
             st.caption(f'Missing Ingrediants : {missing_ing}')
+
 
