@@ -3,48 +3,52 @@ import streamlit as st
 
 with open('recipes.json', 'r') as file: recipes = json.load(file)
 
-st.title('Food IDEA')
+# st.title('Food IDEA')
 
 AllStyle=sorted(list({item['style'] for item in recipes if item.get('style')}))
     
-styles_input = st.multiselect('Food Style', AllStyle)
-ingrediants_input = st.text_input('ingrediants')
+# styles_input = st.multiselect('Food Style', AllStyle)
+# ingrediants_input = st.text_input('ingrediants')
+styles_input = input("Style: ")
+ingrediants_input = input("Ingrediants: ")
 
 def load_menu_f_style(styles_input):
     return [style for style in recipes if style['style'] in styles_input]
 
 def load_ingrediant_f_filter(ingrediants_input):
     if ingrediants_input:
-        return ingrediants_input.split(',')
+        return [str(ing).lower() for ing in ingrediants_input.split(',')]
     else:
         return []
 
-def macth_ingrediant_f_result(menu):
-    ingrediants=load_ingrediant_f_filter(ingrediants_input)
-    item_for_return = list()
-    missing_ingrediants = list()
-    for item in menu:
-        score=0
-        if ingrediants in item['ingrediants']:
-            item_for_return.append(item)
-            for ing in ingrediants:
-                if ing in item['ingrediants']:score+=1
-        else:missing_ingrediants.append(item)
-    return item_for_return, missing_ingrediants, score
+def menu_filter_for_rdm(menu, userinput):
+    # print(menu)
+    local_ingrediants = menu['ingredients']
+    input_ing = userinput
 
+    missing_ing = []
+    match_ing = []
+
+    for ing in local_ingrediants:
+        if ing in input_ing:
+            match_ing.append(ing)
+        else:
+            missing_ing.append(ing)
+    if match_ing:return [menu, missing_ing, len(match_ing)]
+
+    
 if st.button('Get Menu'):
-    if styles_input:menu=load_menu_f_style(styles_input)
-    else:menu=AllStyle
+    menu_list = list()
+    for menu in load_menu_f_style(styles_input):
+        # print(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
+        menu_list.append(menu_filter_for_rdm(menu, load_ingrediant_f_filter(ingrediants_input)))
 
-    recommends, missing_ingrediants, score = macth_ingrediant_f_result(menu)
-
-    for menu_list in recommends:
+    reccommend_list = sorted(menu_list, key=lambda x: x[2], reverse=True)
+    for item in reccommend_list:
+        dish=item[0]
+        missing_ing=item[1]
         with st.container(border=True):
-            st.write(menu_list['name'])
-            st.write(f'Style: {menu_list["style"]}')
-            st.write(menu_list['Category'])
-            st.write(f'Vegetarian: {menu_list["vegetarian"]}')
-            st.caption(f'Match Score :{score}')
-            misstext=''
-            for ing in missing_ingrediants:misstext+=f'{ing}, '
-            st.caption(f'You missing : {misstext}')
+            st.write(dish['style'])
+            st.write(dish['name'])
+            st.caption(f'Match Score : {item[2]}')
+            st.caption(f'Missing Ingrediants : {missing_ing}')
