@@ -47,10 +47,8 @@ if st.button('Get Menu'):
     for item in reccommend_list:
         if item:
             dish=item[0]
-            missing_ing=item[1]
+            missing_ing=', '.join(item[1]) if item[1] else ''
             with st.container(border=True):
-                st.write(dish['style'])
-                st.write(dish['name'])
+                st.write(f"{dish['style']}:{dish['name']}")
                 st.caption(f'Match Score : {item[2]}')
                 st.caption(f'Missing Ingrediants : {missing_ing}')
-
