@@ -3,7 +3,7 @@ import streamlit as st
 
 # load dataset 
 with open('recipes.json', 'r') as file: recipes = json.load(file) 
-
+st.caption('Developed by ณพพร คุณศึกษา nopphon052k@gmail.com')
 st.title('Food IDEA') # title text
 
 # filter style for multiselect
@@ -44,3 +44,4 @@ if st.button('Enter'):
                 st.text(f'มังสวิรัติ : {recommend_menu["vegetarian"]}')
                 st.caption(f'วัตถุดิบ : {", ".join(recommend_menu["ingredients"])}')
                 st.caption(f'วัตถุดิบที่ขาด : {", ".join(missing_ing)}' if missing_ing else 'วัตถุดิบที่ขาด : None')
+
